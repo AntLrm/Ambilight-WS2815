@@ -34,5 +34,6 @@ struct config
  * @param cnf config
  */
 void get_colors(Display* d, unsigned char *values, unsigned t, struct config *cnf);
+void get_colors_rainbow(Display* d, unsigned char *values, unsigned t, struct config *cnf);
 
 #endif

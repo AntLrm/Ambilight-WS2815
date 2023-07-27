@@ -1,22 +1,23 @@
 #include <FastLED.h>
-#define NUM_LEDS 60
+#define NUM_LEDS 144
 #define DATA_PIN 2
 
 CRGB leds[NUM_LEDS];
 CRGB back;
 
 void setup() { 
-	Serial.begin(115200);
+  Serial.begin(115200);
 
-	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 
   back = CRGB(0,0,0);
 
-	for (int i = 0; i < NUM_LEDS; i ++){
-		leds[i] = CRGB(0,0,0);
-	}
-	
-	FastLED.show();
+  for (int i = 0; i < NUM_LEDS; i ++){
+    leds[i] = CRGB(0,0,0);
+  }
+  
+  FastLED.show();
+  
 }
 
 void loop() {
@@ -58,23 +59,29 @@ void loop() {
 
   if (c1 != 'F' && c2 != 'u') return;
   
-	// Read the transmission data and set LED values
-	for (uint8_t i = 0; i < NUM_LEDS; i++) {
-		byte r, g, b;
-
-    while (Serial.available() <= 0);
-		r = Serial.read();
-    
-    while (Serial.available() <= 0);
-		g = Serial.read();
-    
-    while (Serial.available() <= 0);
-		b = Serial.read();
-
-		leds[i].r = r;
-		leds[i].g = g;
-		leds[i].b = b;
-	}
+  // Read the transmission data and set LED values
+  for (uint8_t i = 0; i < NUM_LEDS; i++) {
+    byte l1 = 0;
+    byte r, g, b;
  
-	FastLED.show();
+    while (l1 != 'L') {
+      while (Serial.available() <= 0);
+      l1 = Serial.read();
+    }
+    
+    while (Serial.available() <= 0);
+    r = Serial.read();
+    
+    while (Serial.available() <= 0);
+    g = Serial.read();
+    
+    while (Serial.available() <= 0);
+    b = Serial.read();
+    
+    leds[i].r = r;
+    leds[i].g = g;
+    leds[i].b = b;
+  }
+ 
+  FastLED.show();
 }

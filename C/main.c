@@ -124,16 +124,30 @@ int main() {
 
 	set_interface_attribs(fd, B115200);
 
-	len = 3 * (2 * cnf.leds_on_side + cnf.leds_on_top);
+	len = 4 * (2 * cnf.leds_on_side + cnf.leds_on_top);
 	t = (unsigned) time(NULL);
 
 	d = XOpenDisplay((char *) NULL);
 	values = malloc(sizeof(unsigned char) * (len + 2));
 	values[0] = 'F';
 	values[1] = 'u';
+        printf("%u", len);
+        printf("%u", sizeof(values)/sizeof(values[0]));
 
 	while (True) {
 		get_colors(d, values + 2, t, &cnf);
+		//get_colors_rainbow(d, values, t, &cnf);
+                /*
+                printf("[%c %c], [%c %u %u %u], [%c %u %u %u], [%c %u %u %u], [%c %u %u %u], [%c %u %u %u], [%c %u %u %u]\n", 
+                        values[0], values[1],
+                        values[2], values[3], values[4], values[5],
+                        values[390], values[391], values[392], values[393],
+                        values[394], values[395], values[396], values[397],
+                        values[398], values[399], values[400], values[401],
+                        values[402], values[403], values[404], values[405],
+                        values[574], values[575], values[576], values[577]
+                        );
+                */
 		write(fd, values, len + 2);
 	}
 }
