@@ -10,6 +10,10 @@
 struct config
 {
     int brightness;
+    int left_brightness_factor;
+    int right_brightness_factor;
+    int top_brightness_factor;
+    int bottom_brightness_factor;
 
     int leds_on_top;
     int leds_on_side;

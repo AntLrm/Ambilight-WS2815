@@ -65,20 +65,24 @@ int load_config(struct config *cnf, char **portname) {
 
 	if (CONFIG_FALSE == config_read_file(&config, filename)) return 1;
 	
-	struct config_value cvs[10] = {
-		{"brightness",				&cnf->brightness},
-		{"leds_on_top", 			&cnf->leds_on_top},
-		{"leds_on_side", 			&cnf->leds_on_side},
+	struct config_value cvs[14] = {
+		{"brightness",			&cnf->brightness},
+		{"leds_on_top", 		&cnf->leds_on_top},
+		{"leds_on_side", 		&cnf->leds_on_side},
 		{"pixels_to_process", 		&cnf->pixels_to_process},
 		{"pixels_per_led_top", 		&cnf->pixels_per_led_top},
 		{"pixels_per_led_side", 	&cnf->pixels_per_led_side},
 		{"vertical_pixel_gap", 		&cnf->vertical_pixel_gap},
 		{"vertical_pixel_count", 	&cnf->vertical_pixel_count},
 		{"horizontal_pixel_gap", 	&cnf->horizontal_pixel_gap},
-		{"horizontal_pixel_count", 	&cnf->horizontal_pixel_count}
+		{"horizontal_pixel_count", 	&cnf->horizontal_pixel_count},
+		{"top_brightness_factor",	&cnf->top_brightness_factor},
+		{"bottom_brightness_factor",	&cnf->bottom_brightness_factor},
+		{"left_brightness_factor",	&cnf->left_brightness_factor},
+		{"right_brightness_factor",	&cnf->right_brightness_factor}
 	};
 
-	for (int i = 0; i < 10; i ++) {
+	for (int i = 0; i < 14; i ++) {
 		if (CONFIG_FALSE == config_lookup_int(&config, cvs[i].name, cvs[i].value)) {
 			fprintf(stderr, "Error in config file: %s\n", cvs[i].name);
 			return -1;
@@ -135,7 +139,7 @@ int main() {
         printf("%u", sizeof(values)/sizeof(values[0]));
 
 	while (True) {
-		get_colors(d, values + 2, t, &cnf);
+                get_colors(d, values + 2, t, &cnf);
 		//get_colors_rainbow(d, values, t, &cnf);
                 /*
                 printf("[%c %c], [%c %u %u %u], [%c %u %u %u], [%c %u %u %u], [%c %u %u %u], [%c %u %u %u], [%c %u %u %u]\n", 

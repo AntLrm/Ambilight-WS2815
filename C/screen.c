@@ -55,14 +55,15 @@ void get_colors(Display *d, unsigned char *values, unsigned t, struct config *cn
 
 	srand(t); // Initialising random
 
-	image = XGetImage(d, RootWindow(d, DefaultScreen(d)), 0, 0, cnf->horizontal_pixel_count, cnf->vertical_pixel_count, AllPlanes, ZPixmap);
+	//image = XGetImage(d, RootWindow(d, DefaultScreen(d)), 0, 0, cnf->horizontal_pixel_count, cnf->vertical_pixel_count, AllPlanes, ZPixmap);
+	image = XGetImage(d, DefaultRootWindow(d), 0, 0, cnf->horizontal_pixel_count, cnf->vertical_pixel_count, AllPlanes, ZPixmap);
 
 	//Filling the left side
 	for (int i = 0; i < cnf->leds_on_side; i++) {
 		fillRGB(4 * (cnf->leds_on_side - i - 1),
 				0, cnf->pixels_per_led_side,
 				cnf->vertical_pixel_gap + (i * cnf->pixels_per_led_side), cnf->vertical_pixel_gap + (i+1) * cnf->pixels_per_led_side,
-				values, d, image, cnf->pixels_to_process, cnf->brightness);
+				values, d, image, cnf->pixels_to_process, cnf->brightness * cnf->left_brightness_factor / 100);
 	}
 
 	//Filling the top side
@@ -70,7 +71,7 @@ void get_colors(Display *d, unsigned char *values, unsigned t, struct config *cn
 		fillRGB(cnf->leds_on_side * 4 + 4 * i,
 				cnf->horizontal_pixel_gap + i * cnf->pixels_per_led_top, cnf->horizontal_pixel_gap + (i+1) * cnf->pixels_per_led_top,
 				0, cnf->pixels_per_led_top,
-				values, d, image, cnf->pixels_to_process, cnf->brightness);
+				values, d, image, cnf->pixels_to_process, cnf->brightness * cnf->top_brightness_factor / 100);
 	}
 
 	//Filling the right side
@@ -78,14 +79,14 @@ void get_colors(Display *d, unsigned char *values, unsigned t, struct config *cn
 		fillRGB((cnf->leds_on_side + cnf->leds_on_top + i) * 4,
 				cnf->horizontal_pixel_count - cnf->pixels_per_led_side, cnf->horizontal_pixel_count - 1,
 				cnf->vertical_pixel_gap + i * cnf->pixels_per_led_side, cnf->vertical_pixel_gap + (i+1) * cnf->pixels_per_led_side,
-				values, d, image, cnf->pixels_to_process, cnf->brightness);
+				values, d, image, cnf->pixels_to_process, cnf->brightness * cnf->right_brightness_factor / 100);
 	}
 
 	XDestroyImage(image);
 }
 
 void get_colors_rainbow(Display *d, unsigned char *values, unsigned t, struct config *cnf) {
-    int total = 2* (cnf -> leds_on_side + cnf -> leds_on_top);
+    int total = 2* (cnf->leds_on_side + cnf->leds_on_top);
     for (int k = 0; k < total; k++) {
         values[4*k + 2] = 'L';
         values[4*k + 3] = 254;
